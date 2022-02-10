@@ -25,17 +25,25 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  // 정답 여부 체크
+  List<Icon> scoreKeeper = [];
 
-  List<Icon> scoreKeeper = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
+  // 질문 목록
+  List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.'
   ];
+
+  // 답변 목록
+  List<bool> answers = [
+    false,
+    true,
+    true
+  ];
+
+  // 질문 추적 변수
+  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +57,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[questionNumber],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -74,6 +82,16 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                bool correctAnswer = answers[questionNumber];
+
+                if(correctAnswer == true){
+                  print('정답');
+                }else {
+                  print('오답');
+                }
+                setState(() {
+                  questionNumber++;
+                });
                 //The user picked true.
               },
             ),
@@ -84,8 +102,8 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(15.0),
             child: TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red)
-              ),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.red)),
               child: Text(
                 'False',
                 style: TextStyle(
@@ -94,6 +112,16 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                bool correctAnswer = answers[questionNumber];
+
+                if(correctAnswer == false){
+                  print('정답');
+                }else {
+                  print('오답');
+                }
+                setState(() {
+                  questionNumber++;
+                });
                 //The user picked false.
               },
             ),
