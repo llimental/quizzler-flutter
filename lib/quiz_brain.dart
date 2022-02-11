@@ -1,6 +1,10 @@
 import 'question.dart';
 
 class QuizBrain {
+
+  //질문번호 캡슐화
+  int _questionNumber = 0;
+
   List<Question> _questionPack = [
     Question(q: 'Some cats are actually allergic to humans', a: true),
     Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
@@ -29,12 +33,19 @@ class QuizBrain {
         a: true),
   ];
 
+  void nextQuestion() {
+    // 전체 수 -1 함으로써 안전검사
+    if(_questionNumber < _questionPack.length -1 ){
+      _questionNumber++;
+    }
+  }
+
   // 캡슐화한 _questionPack을 참조하여 텍스트를 반환하는 메서드
-  String getQuestionText(int questionNumber){
-    return _questionPack[questionNumber].questionText;
+  String getQuestionText(){
+    return _questionPack[_questionNumber].questionText;
   }
   // 캡슐화한 _questionPack을 참조하여 정답을 반환하는 메서드
-  bool getQuestionAnswer(int questionNumber){
-    return _questionPack[questionNumber].questionAnswer;
+  bool getQuestionAnswer(){
+    return _questionPack[_questionNumber].questionAnswer;
   }
 }
