@@ -1,7 +1,7 @@
 import 'question.dart';
 
 class QuizBrain {
-  List<Question> questionPack = [
+  List<Question> _questionPack = [
     Question(q: 'Some cats are actually allergic to humans', a: true),
     Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
     Question(q: 'Approximately one quarter of human bones are in the feet.', a: true),
@@ -28,4 +28,13 @@ class QuizBrain {
         q: 'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         a: true),
   ];
+
+  // 캡슐화한 _questionPack을 참조하여 텍스트를 반환하는 메서드
+  String getQuestionText(int questionNumber){
+    return _questionPack[questionNumber].questionText;
+  }
+  // 캡슐화한 _questionPack을 참조하여 정답을 반환하는 메서드
+  bool getQuestionAnswer(int questionNumber){
+    return _questionPack[questionNumber].questionAnswer;
+  }
 }
