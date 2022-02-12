@@ -31,6 +31,19 @@ class _QuizPageState extends State<QuizPage> {
   // 정답 여부 체크
   List<Icon> scoreKeeper = [];
 
+  void checkAnswer(bool userPickedAnswer){
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+
+    if(correctAnswer == userPickedAnswer){
+      scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
+    }else {
+      scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
+    }
+    setState(() {
+      quizBrain.nextQuestion();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,16 +81,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-
-                if(correctAnswer == true){
-                  print('정답');
-                }else {
-                  print('오답');
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(true);
                 //The user picked true.
               },
             ),
@@ -98,16 +102,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-
-                if(correctAnswer == false){
-                  print('정답');
-                }else {
-                  print('오답');
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
                 //The user picked false.
               },
             ),
