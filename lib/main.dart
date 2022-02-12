@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -28,19 +29,45 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  // 정답 여부 체크
   List<Icon> scoreKeeper = [];
 
-  void checkAnswer(bool userPickedAnswer){
-    bool correctAnswer = quizBrain.getQuestionAnswer();
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getCorrectAnswer();
 
-    if(correctAnswer == userPickedAnswer){
-      scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
-    }else {
-      scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
-    }
     setState(() {
-      quizBrain.nextQuestion();
+      if (quizBrain.isFinished()==true){
+        Alert(
+          context: context,
+          type: AlertType.success,
+          title: "Finish",
+          desc: "You solved all the questions.",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Restart",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+            )
+          ],
+        ).show();
+        quizBrain.reset();
+        scoreKeeper.clear();
+      }else{
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          scoreKeeper.add(Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+        quizBrain.nextQuestion();
+      }
     });
   }
 
@@ -69,10 +96,9 @@ class _QuizPageState extends State<QuizPage> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green)),
+            child: FlatButton(
+              textColor: Colors.white,
+              color: Colors.green,
               child: Text(
                 'True',
                 style: TextStyle(
@@ -81,8 +107,8 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                checkAnswer(true);
                 //The user picked true.
+                checkAnswer(true);
               },
             ),
           ),
@@ -90,10 +116,8 @@ class _QuizPageState extends State<QuizPage> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.red)),
+            child: FlatButton(
+              color: Colors.red,
               child: Text(
                 'False',
                 style: TextStyle(
@@ -102,15 +126,15 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                checkAnswer(false);
                 //The user picked false.
+                checkAnswer(false);
               },
             ),
           ),
         ),
         Row(
           children: scoreKeeper,
-        ),
+        )
       ],
     );
   }
